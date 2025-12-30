@@ -50,7 +50,8 @@ export default function App () {
                 alert('Sign in failed: ' + error.message);
             } else {
                 alert("Sign in failed");
-            }        }
+            }        
+        }
     };
 
     const logOut = async () => {
@@ -91,10 +92,7 @@ export default function App () {
             <TouchableOpacity style={styles.button} onPress={signIn}>
                 <Text style={styles.text}>Login</Text>
             </TouchableOpacity>
-       
-            <TouchableOpacity style={styles.button} onPress={logOut}>
-                <Text style={styles.text}>Log Out</Text>
-            </TouchableOpacity>
+
 
         </SafeAreaView>
   );

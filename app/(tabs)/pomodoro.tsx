@@ -1,13 +1,26 @@
 import React, {useState, useEffect } from "react";
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import PlayButton from "./PlayButton";
+import PauseButton from "./PauseButton";
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
+
 
 export default function Pomodoro() {
     const [minutes, setMinutes] = useState(25);
     const [seconds, setSeconds] = useState(0);
     const [displayMessage, setMessage] = useState(false);
+    const [isRunning, setIsRunning] = useState(false);
+
+    const startTimer = () => setIsRunning(true);
+    const stopTimer = () => setIsRunning(false);
 
     useEffect(() => {
+
+        if(!isRunning) {
+            return;
+        }
+
         let interval = setInterval(() => {
             clearInterval(interval);
 
@@ -27,16 +40,36 @@ export default function Pomodoro() {
                 setSeconds(seconds - 1);
             }
         }, 1000)
-    }, [seconds])
+    }, [seconds, minutes, displayMessage, isRunning])
 
     const timerMinutes = minutes < 10 ? `0${minutes}` : minutes;
     const timerSeconds = seconds < 10 ? `0${seconds}` : seconds;
 
     return (
     <SafeAreaView style={styles.container}>
-        { displayMessage && <Text style={styles.text}>Break time! New session starts in: </Text>}
-        { !displayMessage && <Text style={styles.text}>Stay Focused!</Text>}
-         <Text style={styles.timer}>{timerMinutes}:{timerSeconds}</Text>
+        {displayMessage && <Text style={styles.text}>Break time! New session starts in: </Text>}
+        {!displayMessage && <Text style={styles.text}>Stay Focused!</Text>}
+
+        <AnimatedCircularProgress
+          size={120}
+          width={15}
+          fill={100}
+          tintColor="#00e0ff"
+          backgroundColor="#3d5875" 
+          rotation={0}
+          lineCap="round">
+            {() => (
+             <Text style={styles.timer}>
+                {timerMinutes}:{timerSeconds}
+            </Text>
+            )}
+          </AnimatedCircularProgress>
+        
+        <View style={styles.buttons}>
+            <PlayButton onPress={startTimer}></PlayButton>
+            <PauseButton onPress={stopTimer}></PauseButton>
+        </View>
+        
     </SafeAreaView>
     );
 }
@@ -60,5 +93,10 @@ const styles = StyleSheet.create({
     },
     pomodoro: {
         fontSize: 96,
+    },
+
+    buttons: {
+        flexDirection: "row",
+        gap: 16,
     },
 });
