@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import {Text, TextInput, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { auth } from '../firebase';
 import { router } from "expo-router";
@@ -31,7 +31,6 @@ export default function App () {
     const signUp = async () => {
         try {
             await createUserWithEmailAndPassword(auth, email, password);
-            router.replace("/")
         } catch (error) {
             if (error instanceof Error) {
                 alert('Sign up failed: ' + error.message);
@@ -86,42 +85,47 @@ export default function App () {
             onChangeText={setPassword}
             />
 
-            <TouchableOpacity style={styles.button} onPress={signUp}>
-                <Text style={styles.text}>Sign Up</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={signIn}>
-                <Text style={styles.text}>Login</Text>
-            </TouchableOpacity>
-
-
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={signUp}>
+                    <Text style={styles.text}>Sign Up</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={signIn}>
+                        <Text style={styles.text}>Login</Text>
+                </TouchableOpacity>  
+            </View>
         </SafeAreaView>
   );
 };
 
 const styles =  StyleSheet.create({
+    buttonContainer: {
+        flexDirection: "row",
+        gap: 12,
+        width: "90%",
+    },
     container: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#1e212d",
+        backgroundColor: "#0f0e47",
     },
     title: {
-        fontSize: 28,
+        fontSize: 35,
         fontWeight: "800",
         marginBottom: 40,
-        color: "#eabf9f",
+        color: "#b7b7d8ff",
     },
     textInput: {
         height: 50,
         width: "90%",
-        backgroundColor: "#FFFFFF",
-        borderColor:  "#E8EAF6",
+        backgroundColor: "#FBEFEF",
+        borderColor:  "#F9DFDF",
         borderWidth: 2,
         borderRadius: 15,
         marginVertical: 15,
         paddingHorizontal: 25,
         fontSize: 16,
-        color:  "#3C4858",
+        color:  "#272757",
         shadowColor: "#9E9E9E",
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
@@ -129,9 +133,9 @@ const styles =  StyleSheet.create({
         elevation: 4, 
     },
     button: {
-        width: "30%",
-        marginVertical: 15,
-        backgroundColor:"#9E9E9E",
+        flex: 1,
+        paddingVertical: 15,
+        backgroundColor:"#b7b7d8ff",
         padding: 20,
         borderRadius: 15,
         alignItems: "center",
@@ -144,7 +148,7 @@ const styles =  StyleSheet.create({
     },
     text: {
         color: "#FFFFFF",
-        fontSize: 16, 
+        fontSize: 17, 
         fontWeight: "600",
     },
     status: {

@@ -1,12 +1,15 @@
 import React, {useState, useEffect } from "react";
 import { Text, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import PlayButton from "./PlayButton";
-import PauseButton from "./PauseButton";
+import PlayButton from "../../components/PlayButton";
+import PauseButton from "../../components/PauseButton";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 
 export default function Pomodoro() {
+    const WORK = 25 * 60;
+    const BREAK = 5 * 60;
+
     const [minutes, setMinutes] = useState(25);
     const [seconds, setSeconds] = useState(0);
     const [displayMessage, setMessage] = useState(false);
@@ -44,6 +47,10 @@ export default function Pomodoro() {
 
     const timerMinutes = minutes < 10 ? `0${minutes}` : minutes;
     const timerSeconds = seconds < 10 ? `0${seconds}` : seconds;
+    const totalSeconds = displayMessage ? BREAK : WORK;
+    const remainingSeconds = minutes * 60 + seconds;
+
+    const progress = (remainingSeconds / totalSeconds) * 100;
 
     return (
     <SafeAreaView style={styles.container}>
@@ -51,10 +58,11 @@ export default function Pomodoro() {
         {!displayMessage && <Text style={styles.text}>Stay Focused!</Text>}
 
         <AnimatedCircularProgress
-          size={120}
+          size={210}
           width={15}
-          fill={100}
-          tintColor="#00e0ff"
+          fill={progress}
+          duration={1000}
+          tintColor="#c3c3d9ff"
           backgroundColor="#3d5875" 
           rotation={0}
           lineCap="round">
@@ -76,18 +84,20 @@ export default function Pomodoro() {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#1e212d",
+        backgroundColor: "#0f0e47",
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
     },
     text: {
-        color: "#eabf9f",
-        fontSize: 20,
+        color: "#FBEFEF",
+        fontSize: 27,
+        marginBottom: 24,
+        fontWeight: "800",
     },
     timer: {
-        color: "#eabf9f",
-        fontSize: 70,
+        color: "#FBEFEF",
+        fontSize: 30,
         fontWeight: "800",
         fontFamily: "RobotoMono",
     },
@@ -98,5 +108,6 @@ const styles = StyleSheet.create({
     buttons: {
         flexDirection: "row",
         gap: 16,
+        marginTop: 28,
     },
 });

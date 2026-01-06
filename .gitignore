@@ -40,3 +40,6 @@ yarn-error.*
 
 # Misc
 app-example
+
+google-services.json
+

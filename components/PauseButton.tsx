@@ -5,7 +5,7 @@ export default function PlayButton ({ onPress }) {
     return (
         <Pressable style={styles.button} onPress={onPress}>
             <Ionicons 
-            name="play" size={28} color="#fff">
+            name="pause" size={28} color="#fff">
             </Ionicons>
         </Pressable>
     );
@@ -13,7 +13,7 @@ export default function PlayButton ({ onPress }) {
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: "#eabf95",
+        backgroundColor: "#8989deff",
         padding: 16, 
         borderRadius: 50,
     },
