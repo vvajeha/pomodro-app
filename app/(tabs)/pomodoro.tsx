@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     },
     timer: {
         color: "#FBEFEF",
-        fontSize: 30,
+        fontSize: 35,
         fontWeight: "800",
         fontFamily: "RobotoMono",
     },
