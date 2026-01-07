@@ -47,9 +47,9 @@ export default function Pomodoro() {
 
     const timerMinutes = minutes < 10 ? `0${minutes}` : minutes;
     const timerSeconds = seconds < 10 ? `0${seconds}` : seconds;
+    
     const totalSeconds = displayMessage ? BREAK : WORK;
     const remainingSeconds = minutes * 60 + seconds;
-
     const progress = (remainingSeconds / totalSeconds) * 100;
 
     return (

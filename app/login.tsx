@@ -43,7 +43,6 @@ export default function App () {
     const signIn = async () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            router.replace("/(tabs)/pomodoro")
         } catch (error) {
             if (error instanceof Error) {
                 alert('Sign in failed: ' + error.message);
@@ -125,7 +124,7 @@ const styles =  StyleSheet.create({
         marginVertical: 15,
         paddingHorizontal: 25,
         fontSize: 16,
-        color:  "#272757",
+        color: "#272757",
         shadowColor: "#9E9E9E",
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
