@@ -28,6 +28,9 @@ export default function TabTwoScreen() {
     };
 
     const addTodo = async () => {
+        if (task.trim().length === 0) {
+            return;
+        } 
         if (user) {
             await addDoc(todosCollection, { task, completed: false, userId: user.uid })
             setTask('');
@@ -74,14 +77,14 @@ export default function TabTwoScreen() {
             contentContainerStyle={{paddingHorizontal: 12, paddingBottom: 30}}
             renderItem={({ item }) => (
                 <View style={styles.todoContainer}>
-                    <Text style={{ textDecorationLine: item.completed ? 'line-through' : 'none', flex: 1}}>{item.task}</Text>
+                    <Text style={[styles.todoText, item.completed && styles.todoCompleted]}>{item.task}</Text>
 
-                    <TouchableOpacity style={styles.button} onPress={() => updateTodo(item.id, item.completed)}>
-                        <Text style={styles.buttonText}>{item.completed ? "Undo" : "Complete"}</Text>
+                    <TouchableOpacity style={styles.smallButton} onPress={() => updateTodo(item.id, item.completed)}>
+                        <Text style={styles.smallButtonText}>{item.completed ? "Undo" : "Complete"}</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} onPress={() => deleteTodo(item.id)}>
-                        <Text style={styles.buttonText}>Delete</Text>
+                    <TouchableOpacity style={styles.smallButton} onPress={() => deleteTodo(item.id)}>
+                        <Text style={styles.smallButtonText}>Delete</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -144,7 +147,7 @@ const styles = StyleSheet.create({
         borderRadius: 14, 
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: "#b7b7d8ff",
+        backgroundColor: "#8989deff",
         shadowColor: "#5C6BC0",
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.4,
@@ -153,7 +156,7 @@ const styles = StyleSheet.create({
     },
     
     buttonText: {
-        color: "#0f0e47",
+        color: "#fff",
         fontSize: 18,
         fontWeight: '800',
     },
@@ -186,20 +189,30 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 5,   
         marginLeft: 10,
-  },
-  
-  smallButton: {
-  paddingVertical: 6,
-  paddingHorizontal: 12,
-  borderRadius: 12,
-  backgroundColor: "#b7b7d8ff",
-  marginLeft: 8,
-},
+    },
+    smallButton: {
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        borderRadius: 12,
+        backgroundColor: "#b7b7d8ff",
+        marginLeft: 8,
+    },
+    smallButtonText: {
+        fontSize: 14,
+        fontWeight: "700",
+        color: "#0f0e47",
+    },
 
-smallButtonText: {
-  fontSize: 14,
-  fontWeight: "700",
-  color: "#0f0e47",
-},
+    todoText: {
+        flex: 1,
+        fontSize: 18,
+        fontWeight: "700",
+        color: "#272757",
+        letterSpacing: 0.3,
+    },
 
-});
+    todoCompleted: {
+        textDecorationLine: "line-through",
+        color: "#a0a0c0",
+    },
+    });
