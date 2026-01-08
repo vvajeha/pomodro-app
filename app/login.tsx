@@ -5,8 +5,7 @@ import { auth } from '../firebase';
 import { router } from "expo-router";
 import { createUserWithEmailAndPassword,
     onAuthStateChanged,
-    signInWithEmailAndPassword,
-    signOut, 
+    signInWithEmailAndPassword, 
     User 
     } from 'firebase/auth';
 
@@ -51,19 +50,7 @@ export default function App () {
             }        
         }
     };
-
-    const logOut = async () => {
-        try {
-            await signOut(auth);
-        } catch (error) {
-             if (error instanceof Error) {
-                alert('Sign out failed: ' + error.message);
-            } else {
-                alert("Sign out failed!");
-            }
-        }
-    };
-
+    
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Login</Text>
@@ -101,6 +88,7 @@ const styles =  StyleSheet.create({
         flexDirection: "row",
         gap: 12,
         width: "90%",
+        marginTop: 15,
     },
     container: {
         flex: 1,
@@ -112,7 +100,7 @@ const styles =  StyleSheet.create({
         fontSize: 35,
         fontWeight: "800",
         marginBottom: 40,
-        color: "#b7b7d8ff",
+        color: "#FBEFEF",
     },
     textInput: {
         height: 50,
@@ -154,12 +142,5 @@ const styles =  StyleSheet.create({
         marginTop: 10,
         color: "#3C4858",
         fontSize: 14,
-    },
-    logOutButton: {
-        backgroundColor: "#EEF2FF",
-        shadowColor: "#9E9E9E",
-    },
-    logoutText: {
-        color: "#9E9E9E",
     },
 });

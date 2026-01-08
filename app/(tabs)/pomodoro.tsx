@@ -1,10 +1,13 @@
 import React, {useState, useEffect } from "react";
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PlayButton from "../../components/PlayButton";
 import PauseButton from "../../components/PauseButton";
 import RestartButton from "@/components/RestartButton";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { auth } from '../../firebase';
+import { signOut } from 'firebase/auth';
+import { router } from 'expo-router';
 
 
 export default function Pomodoro() {
@@ -60,13 +63,25 @@ export default function Pomodoro() {
     const remainingSeconds = minutes * 60 + seconds;
     const progress = (remainingSeconds / totalSeconds) * 100;
 
+    const logOut = async () => {
+        try {
+            await signOut(auth);
+            router.replace("/");
+        } catch (error) {
+                if (error instanceof Error) {
+                alert('Sign out failed: ' + error.message);
+            } else {
+                alert("Sign out failed!");
+            }
+        }
+    };
+    
     return (
     <SafeAreaView style={styles.container}>
+        <TouchableOpacity style={styles.logOutButton} onPress={logOut}>
+                <Text style={styles.logOutText}>Log Out</Text>
+        </TouchableOpacity> 
         
-        <View style={styles.header}>
-            <Text style={styles.title}>Pomodoro Timer</Text>
-        </View>
-
         <View style={styles.timerContainer}>
                 {displayMessage && <Text style={styles.text}>Break time! New session starts in: </Text>}
                 {!displayMessage && <Text style={styles.text}>Stay Focused!</Text>}
@@ -106,20 +121,17 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     header: {
-        marginTop: 70,
+        marginTop: 90,
         alignItems: 'center',
+        width: '100%', 
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
+        flexDirection: 'row',
     },
-    title: {
-        fontSize: 35,
-        fontWeight: '800',
-        color: "#FBEFEF",
-        textAlign: 'center',
-    },  
     timerContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: -90,
     },
     text: {
         color: "#FBEFEF",
@@ -140,6 +152,20 @@ const styles = StyleSheet.create({
     buttons: {
         flexDirection: "row",
         gap: 16,
-        marginTop: 28,
+        marginTop: 30,
+    },
+    logOutButton: {
+        backgroundColor: "#8989deff",
+        marginTop: 16, 
+        paddingHorizontal: 14, 
+        paddingVertical: 8, 
+        borderRadius: 10, 
+        position: 'absolute',
+        right: 16, 
+        top: 10, 
+    },
+    logOutText: {
+        color: '#fff',
+        fontWeight: '800',
     },
 });

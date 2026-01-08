@@ -2,14 +2,14 @@
 import React, {useState, useEffect } from "react";
 import { Text, StyleSheet, View, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getAuth } from "firebase/auth";
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, query, where, doc } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db, auth } from '../../firebase';
+import { signOut } from 'firebase/auth';
+import { router } from 'expo-router';
 
 export default function TabTwoScreen() {
     const [task, setTask] = useState('');
     const [todos, setTodos] = useState<any>( [] );
-    const auth = getAuth();
     const user = auth.currentUser;
     const todosCollection = collection(db, 'todos');
 
@@ -51,12 +51,27 @@ export default function TabTwoScreen() {
         await deleteDoc(todoDoc);
         fetchTodos();
     };
+    const logOut = async () => {
+        try {
+            await signOut(auth);
+            router.replace("/");
+        } catch (error) {
+                if (error instanceof Error) {
+                alert('Sign out failed: ' + error.message);
+            } else {
+                alert("Sign out failed!");
+            }
+        }
+    };
 
     return (
         <SafeAreaView style={styles.safeArea}>
-
             <View style={styles.container}>
                 <Text style={styles.title}>To Do List</Text>
+                
+            <TouchableOpacity style={styles.logOutButton} onPress={logOut}>
+                <Text style={styles.logOutText}>Log Out</Text>
+            </TouchableOpacity> 
 
             <View style={styles.inputContainer}>
                 <TextInput
@@ -101,6 +116,7 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         backgroundColor: "#0f0e47",
+        position: 'relative',
     },
 
     container: {
@@ -215,4 +231,19 @@ const styles = StyleSheet.create({
         textDecorationLine: "line-through",
         color: "#a0a0c0",
     },
-    });
+    logOutButton: {
+        backgroundColor: "#8989deff",
+        marginTop: 16, 
+        paddingHorizontal: 14, 
+        paddingVertical: 8, 
+        borderRadius: 10, 
+        position: 'absolute',
+        right: 16,
+        top: 2,
+        elevation: 50,
+    },
+    logOutText: {
+        color: '#fff',
+        fontWeight: '800',
+    },
+});
